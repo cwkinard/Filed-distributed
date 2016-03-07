@@ -1,0 +1,25 @@
+rabbitmq:
+  image: cwkinard/rabbitmq-server-pi
+  container_name: rabbitmq
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+
+filed:
+  image: cwkinard/filed-distributed-pi
+  container_name: filed 
+  links:
+   - rabbitmq:rabbitmq
+  command: ["-s", "21:28", "--logging_level", "DEBUG"]
+  volumes:
+   - ./docker-Filed/accounts.json:/accounts.json
+   - ./docker-Filed/Filed.py:/Filed.py
+
+filer:
+  image: cwkinard/filed-distributed-filer-pi
+  links:
+   - rabbitmq:rabbitmq
+  volumes:
+    - ./docker-Filed-filer/.credentials/:/Filed/.credentials
+    - ./docker-Filed-filer/client_secret.json/:/Filed/client_secret.json
+    - ./docker-Filed-filer/src:/Filed/src
