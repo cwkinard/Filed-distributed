@@ -23,8 +23,8 @@ class Scraper(ScraperBase):
     def _login(self):
 	
 	browser = webdriver.Remote(
-   	   command_executor='http://54.174.28.127:4444/wd/hub',
-   	   desired_capabilities=DesiredCapabilities.FIREFOX)
+   	   command_executor='http://selenium:4444/wd/hub',
+   	   desired_capabilities=DesiredCapabilities.PHANTOMJS)
 	
 	browser.get(LOGIN_PAGE)
 
