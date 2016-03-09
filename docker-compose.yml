@@ -10,7 +10,7 @@ filed:
   container_name: filed 
   links:
    - rabbitmq:rabbitmq
-  command: ["-s", "21:28", "--logging_level", "DEBUG"]
+  command: ["-s", "22:12", "--logging_level", "DEBUG"]
   volumes:
    - ./docker-Filed/accounts.json:/accounts.json
    - ./docker-Filed/Filed.py:/Filed.py
@@ -19,7 +19,20 @@ filer:
   image: cwkinard/filed-distributed-filer-pi
   links:
    - rabbitmq:rabbitmq
+   - selenium:selenium
   volumes:
     - ./docker-Filed-filer/.credentials/:/Filed/.credentials
     - ./docker-Filed-filer/client_secret.json/:/Filed/client_secret.json
     - ./docker-Filed-filer/src:/Filed/src
+
+selenium:
+  image: cwkinard/selenium-hub-pi
+  container_name: selenium
+  ports:
+    - "4444:4444"
+
+selenium-node:
+  image: cwkinard/selenium-node-phantomjs-pi
+  container_name: selenium-node
+  links:
+    - selenium:selenium
